@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AspNetCore.Caching.Demo.Database;
 using AspNetCore.Caching.Demo.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using Z.EntityFramework.Plus;
 
 namespace AspNetCore.Caching.Demo.Controllers
 {
@@ -29,12 +32,16 @@ namespace AspNetCore.Caching.Demo.Controllers
                 .ToArrayAsync();
         }
 
-        [HttpGet("memory-cache")]
-        public async Task<IEnumerable<WeatherForecast>> FromMemoryCacheAsync()
+        [HttpGet("second-level-cache")]
+        public async Task<IEnumerable<WeatherForecast>> SecondLevelCacheAsync()
         {
-            return await _context.WeatherForecasts
-                .AsNoTracking()
-                .ToArrayAsync();
+            var options = new MemoryCacheEntryOptions
+            {
+                SlidingExpiration = TimeSpan.FromSeconds(10)
+            };
+
+            QueryCacheManager.DefaultMemoryCacheEntryOptions = options;
+            return await _context.WeatherForecasts.FromCacheAsync(options);
         }
     }
 }

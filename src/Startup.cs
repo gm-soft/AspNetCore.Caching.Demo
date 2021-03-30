@@ -1,7 +1,7 @@
+using AspNetCore.Caching.Demo.Config;
 using AspNetCore.Caching.Demo.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,10 +30,7 @@ namespace AspNetCore.Caching.Demo
                 });
             });
 
-            services
-                .AddEntityFrameworkSqlite()
-                .AddDbContext<DatabaseContext>(x =>
-                    x.UseSqlite(Configuration.GetConnectionString("Db")));
+            DatabaseConfig.Setup(services, Configuration);
 
             services.AddHostedService<AppInitializeService>();
         }
