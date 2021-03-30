@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace AspNetCore.Caching.Demo.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/weather-forecasts")]
     public class WeatherForecastController : ControllerBase
     {
         private readonly ILogger<WeatherForecastController> _logger;
@@ -24,7 +24,17 @@ namespace AspNetCore.Caching.Demo.Controllers
         [HttpGet("")]
         public async Task<IEnumerable<WeatherForecast>> GetAsync()
         {
-            return await _context.WeatherForecasts.AsNoTracking().ToArrayAsync();
+            return await _context.WeatherForecasts
+                .AsNoTracking()
+                .ToArrayAsync();
+        }
+
+        [HttpGet("memory-cache")]
+        public async Task<IEnumerable<WeatherForecast>> FromMemoryCacheAsync()
+        {
+            return await _context.WeatherForecasts
+                .AsNoTracking()
+                .ToArrayAsync();
         }
     }
 }

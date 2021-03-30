@@ -27,7 +27,6 @@ namespace AspNetCore.Caching.Demo.Database
             using IServiceScope scope = _serviceProvider.CreateScope();
 
             var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-            await context.Database.EnsureCreatedAsync(cancellationToken);
             await context.Database.MigrateAsync(cancellationToken);
 
             if (!await context.WeatherForecasts.AnyAsync(cancellationToken))
