@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using AspNetCore.Caching.Demo.Database;
 using AspNetCore.Caching.Demo.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCore.Caching.Demo.Controllers
 {
@@ -12,19 +12,19 @@ namespace AspNetCore.Caching.Demo.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        
-
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly DatabaseContext _context;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, DatabaseContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
-        [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpGet("")]
+        public async Task<IEnumerable<WeatherForecast>> GetAsync()
         {
-            return new WeatherForecastRandomCollection(1, 5);
+            return await _context.WeatherForecasts.AsNoTracking().ToArrayAsync();
         }
     }
 }

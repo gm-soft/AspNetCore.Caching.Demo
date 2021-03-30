@@ -18,12 +18,12 @@ namespace AspNetCore.Caching.Demo.Models
         {
             var random = new Random();
 
-            _collection = Enumerable.Range(@from, to).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = random.Next(-20, 55),
-                Summary = _summaries[random.Next(_summaries.Length)]
-            }).ToArray();
+            _collection = Enumerable.Range(@from, to).Select(index =>
+                new WeatherForecast(
+                    date: DateTime.Now.AddDays(index),
+                    temperatureC: random.Next(-20, 55),
+                    summary: _summaries[random.Next(_summaries.Length)]))
+                .ToArray();
         }
 
         public IEnumerator<WeatherForecast> GetEnumerator() => _collection.GetEnumerator();
