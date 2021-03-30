@@ -31,6 +31,7 @@ namespace AspNetCore.Caching.Demo
             });
 
             DatabaseConfig.Setup(services, Configuration);
+            services.AddMemoryCache();
 
             services.AddHostedService<AppInitializeService>();
         }

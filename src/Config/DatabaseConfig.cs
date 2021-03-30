@@ -11,7 +11,6 @@ namespace AspNetCore.Caching.Demo.Config
         public static void Setup(IServiceCollection services, IConfiguration configuration)
         {
             services
-                .AddEntityFrameworkSqlite()
                 .AddDbContext<DatabaseContext>((DbContextOptionsBuilder optionsBuilder) =>
                         optionsBuilder
                             .UseSqlite(configuration.GetConnectionString("Db")));
