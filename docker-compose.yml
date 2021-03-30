@@ -1,0 +1,41 @@
+
+version: "3.4"
+
+networks:
+  acd-network:
+    driver: bridge
+
+services:
+  api:
+    container_name: acd-api
+    image: acd/api
+    restart: always
+    depends_on:
+      - redis
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_Kestrel__Certificates__Default__Password: password
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp.pfx
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:5001
+      ASPNETCORE_HTTPS_PORT: 5001
+      ConnectionStrings:Redis: redis:6379,ssl=False,abortConnect=False
+    ports:
+      - 5001:5001
+    networks:
+      - acd-network
+    volumes:
+      - ~/.aspnet/https:/https:ro
+
+  redis:
+    container_name: acd-redis
+    image: bitnami/redis:latest
+    restart: always
+    ports:
+      - 6379:6379
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - acd-network

@@ -1,3 +1,30 @@
+//
+//            God Bless         No Bugs
+//
+//
+//
+//                      _oo0oo_
+//                     o8888888o
+//                     88" . "88
+//                     (| -_- |)
+//                     0\  =  /0
+//                   ___/`---'\___
+//                 .' \\|     |// '.
+//                / \\|||  :  |||// \
+//               / _||||| -:- |||||- \
+//              |   | \\\  -  /// |   |
+//              | \_|  ''\---/''  |_/ |
+//              \  .-\__  '-'  ___/-. /
+//            ___'. .'  /--.--\  `. .'___
+//         ."" '<  `.___\_<|>_/___.' >' "".
+//        | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+//        \  \ `_.   \_ __\ /__ _/   .-` /  /
+//    =====`-.____`.___ \_____/___.-`___.-'=====
+//                      `=---='
+//
+//  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+
 using AspNetCore.Caching.Demo.Config;
 using AspNetCore.Caching.Demo.Database;
 using Microsoft.AspNetCore.Builder;
@@ -33,6 +60,16 @@ namespace AspNetCore.Caching.Demo
             DatabaseConfig.Setup(services, Configuration);
             services.AddMemoryCache();
 
+            services.AddDistributedMemoryCache();
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = Configuration.GetConnectionString("Redis");
+            });
+
+            services
+                .AddHealthChecks()
+                .AddRedis(Configuration.GetConnectionString("Redis"));
+
             services.AddHostedService<AppInitializeService>();
         }
 
@@ -55,6 +92,8 @@ namespace AspNetCore.Caching.Demo
             app.UseRouting();
 
             app.UseAuthorization();
+
+            HealthCheckCustomResponse.Setup(app);
 
             app.UseEndpoints(endpoints =>
             {
