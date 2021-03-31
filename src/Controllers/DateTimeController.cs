@@ -75,6 +75,14 @@ namespace AspNetCore.Caching.Demo.Controllers
         [ResponseCache(Location = ResponseCacheLocation.Any, Duration = TenSeconds)]
         public IActionResult ResponseCached() => NowInternal();
 
+        [HttpGet("now/response-no-cached")]
+        [ResponseCache(Location = ResponseCacheLocation.None)]
+        public IActionResult ResponseNoCached() => NowInternal();
+
+        [HttpGet("now/response-vary-cached")]
+        [ResponseCache(Location = ResponseCacheLocation.Any, VaryByHeader = "User-Agent", Duration = 300)]
+        public IActionResult ResponseCachedUserAgent() => NowInternal();
+
         private IActionResult NowInternal()
         {
             _logger.LogInformation("Current date is requested");
