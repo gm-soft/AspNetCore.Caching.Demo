@@ -66,7 +66,6 @@ namespace AspNetCore.Caching.Demo.Controllers
                 });
 
             return Ok(response);
-
         }
 
         // https://metanit.com/sharp/aspnet5/14.2.php
@@ -76,7 +75,7 @@ namespace AspNetCore.Caching.Demo.Controllers
         public IActionResult ResponseCached() => NowInternal();
 
         [HttpGet("now/response-no-cached")]
-        [ResponseCache(Location = ResponseCacheLocation.None)]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult ResponseNoCached() => NowInternal();
 
         [HttpGet("now/response-vary-cached")]
