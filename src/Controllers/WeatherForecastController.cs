@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AspNetCore.Caching.Demo.Database;
@@ -15,12 +14,10 @@ namespace AspNetCore.Caching.Demo.Controllers
     [Route("/weather-forecasts")]
     public class WeatherForecastController : ControllerBase
     {
-        private readonly ILogger<WeatherForecastController> _logger;
         private readonly DatabaseContext _context;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, DatabaseContext context)
+        public WeatherForecastController(DatabaseContext context)
         {
-            _logger = logger;
             _context = context;
         }
 

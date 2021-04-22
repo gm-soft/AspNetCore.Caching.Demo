@@ -93,7 +93,7 @@ namespace AspNetCore.Caching.Demo
 
             app.UseAuthorization();
 
-            HealthCheckCustomResponse.Setup(app);
+            MG.Utils.AspNetCore.HealthCheck.HealthCheckCustomResponse.Setup(app);
 
             app.UseEndpoints(endpoints =>
             {
