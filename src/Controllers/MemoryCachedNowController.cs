@@ -24,7 +24,7 @@ namespace AspNetCore.Caching.Demo.Controllers
             const string nowKey = "MemoryCachedNowController_Index";
             return _memoryCache.GetOrCreate<IActionResult>(nowKey, entry =>
             {
-                entry.SlidingExpiration = TimeSpan.FromSeconds(3);
+                entry.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(3);
                 return new DateTimeActionResult(_logger, DateTimeOffset.Now);
             });
         }

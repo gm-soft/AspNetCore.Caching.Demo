@@ -34,7 +34,7 @@ namespace AspNetCore.Caching.Demo.Controllers
         {
             var options = new MemoryCacheEntryOptions
             {
-                SlidingExpiration = TimeSpan.FromSeconds(10)
+                SlidingExpiration = TimeSpan.FromSeconds(3)
             };
 
             QueryCacheManager.DefaultMemoryCacheEntryOptions = options;

@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Text.Json;
-using System.Threading.Tasks;
-using AspNetCore.Caching.Demo.Models.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
 namespace AspNetCore.Caching.Demo.Controllers
@@ -18,6 +13,13 @@ namespace AspNetCore.Caching.Demo.Controllers
         public ResponseHeaderCachedNowController(ILogger<ResponseHeaderCachedNowController> logger)
         {
             _logger = logger;
+        }
+
+        [HttpPost("now/post")]
+        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = 10)]
+        public IActionResult ResponsePost()
+        {
+            return new DateTimeActionResult(_logger, DateTimeOffset.Now);
         }
 
         // https://metanit.com/sharp/aspnet5/14.2.php
